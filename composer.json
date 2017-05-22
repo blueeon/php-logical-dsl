@@ -4,6 +4,7 @@
   "license": "MIT",
   "keywords": [""],
   "version": "0.1.0-beta",
+  "homepage": "https://github.com/blueeon/php-logical-dsl",
   "authors": [
     {
       "name": "blueeon",
