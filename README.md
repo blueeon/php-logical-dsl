@@ -7,7 +7,7 @@ A simple DSL for WHEN and THEN
 ## Syntax Definition
 ### Prototype
 ```
-主规则[
+rule1[
     WHEN{ req.order.order_from = 11 AND req.order.stock_channel NOT IN( 'cn-order') AND req.order.price >= 1000}
     
     THEN{
