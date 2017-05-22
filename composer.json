@@ -1,0 +1,23 @@
+{
+  "name": "blueeon/php-logical-dsl",
+  "description": "A simple DSL for WHEN and THEN",
+  "license": "MIT",
+  "keywords": [""],
+  "version": "0.1.0-beta",
+  "authors": [
+    {
+      "name": "blueeon",
+      "email": "blueeon@blueeon.net",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+
+  "autoload": {
+    "psr-0": {
+      "PHPLogicalDSL\\": "src/"
+    }
+  }
+}
