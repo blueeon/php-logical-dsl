@@ -15,7 +15,7 @@ rule1[
     (res.mihome = 112 AND res.price = 100 AND WEIGHT=70)
     }
     
-    除此之外{ PRIORITY = 1}
+    EXTRA{ PRIORITY = 1}
 ]
 [RULE NAME]{
     WHEN:     [[Condition]...];
