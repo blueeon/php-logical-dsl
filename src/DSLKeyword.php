@@ -7,6 +7,9 @@
  */
 class DSLKeyword
 {
+    /**
+     * DSL keywords,reserved words
+     */
     const KEY_WORDS = [
         'WHEN',
         'THEN',
@@ -16,4 +19,6 @@ class DSLKeyword
         'IN',
         'NOT'
     ];
+    
+
 }

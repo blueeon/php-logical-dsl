@@ -2,7 +2,7 @@
   "name": "blueeon/php-logical-dsl",
   "description": "A simple DSL for WHEN and THEN",
   "license": "MIT",
-  "keywords": [""],
+  "keywords": ["DSL","logical","php","rule"],
   "version": "0.1.0-beta",
   "homepage": "https://github.com/blueeon/php-logical-dsl",
   "authors": [
