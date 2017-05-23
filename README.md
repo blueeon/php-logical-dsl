@@ -3,6 +3,11 @@
 A simple DSL for WHEN and THEN
 
 ## Installation
+
+```
+composer require blueeon/php-logical-dsl
+```
+
 ## Try it!
 ## Features
 ## Syntax Definition
