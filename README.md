@@ -24,9 +24,9 @@ rule_name2{
     PRIORITY = 2
 }
 [RULE NAME]{
-    WHEN:       [[Condition]...]
-    THEN:     [[Result]...]
-    PRIORITY: [priority]
+    WHEN        [[Condition]...]
+    THEN        [[Result]...]
+    PRIORITY =  [priority]
 }
 ...
 ```
