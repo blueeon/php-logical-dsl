@@ -24,3 +24,5 @@ phpunit.phar
 /phpunit.xml
 
 composer.lock
+#composer vendor
+vendor
