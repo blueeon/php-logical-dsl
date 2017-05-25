@@ -5,17 +5,17 @@
  * createTIme:  20170523 11:55
  * fileName :   PHPLogicalDSL.php
  */
-namespace PHPLogicalDSL\src;
+namespace PHPLogicalDSL;
 
-use PHPLogicalDSL\src\lib\Builder;
-use PHPLogicalDSL\src\lib\ParameterTemplate;
-use PHPLogicalDSL\src\lib\Parser;
+use PHPLogicalDSL\lib\Builder;
+use PHPLogicalDSL\lib\ParameterTemplate;
+use PHPLogicalDSL\lib\Parser;
 
 
 /**
  * Class PHPLogicalDSL
  *
- * @package PHPLogicalDSL\src
+ * @package PHPLogicalDSL
  * @author  YangKe <yangke@xiaomi.com>
  */
 class PHPLogicalDSL

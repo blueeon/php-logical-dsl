@@ -1,10 +1,10 @@
 <?php
-namespace PHPLogicalDSL\src\lib;
+namespace PHPLogicalDSL\lib;
 
 /**
  * Class Painter    将逻辑图画出来
  *
- * @package PHPLogicalDSL\src\lib
+ * @package PHPLogicalDSL\lib
  * @author  YangKe <yangke@xiaomi.com>
  */
 class Painter extends SingletonInstance

@@ -5,12 +5,12 @@
  * createTIme:  20170522 19:24
  * fileName :   DSLStructure.php
  */
-namespace PHPLogicalDSL\src;
+namespace PHPLogicalDSL;
 
 /**
  * Class DSLKeyword DSL结构定义
  *
- * @package PHPLogicalDSL\src
+ * @package PHPLogicalDSL
  * @author  YangKe <yangke@xiaomi.com>
  */
 class DSLStructure

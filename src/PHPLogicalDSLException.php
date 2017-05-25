@@ -5,11 +5,11 @@
  * fileName :   PHPLogicalDSLException.php
  */
 
-namespace PHPLogicalDSL\src;
+namespace PHPLogicalDSL;
 /**
  * Class PHPLogicalDSLException    DSL异常
  *
- * @package PHPLogicalDSL\src
+ * @package PHPLogicalDSL
  * @author  YangKe <yangke@xiaomi.com>
  */
 class PHPLogicalDSLException extends \Exception

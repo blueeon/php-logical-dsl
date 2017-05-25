@@ -5,12 +5,12 @@
  * fileName :   ParameterTemplate.php
  */
 
-namespace PHPLogicalDSL\src\lib;
+namespace PHPLogicalDSL\lib;
 
 /**
  * Class ParameterTemplate    规则引擎的参数模板,定义使用规则引擎时的输入和返回值
  *
- * @package PHPLogicalDSL\src\lib
+ * @package PHPLogicalDSL\lib
  * @author  YangKe <yangke@xiaomi.com>
  */
 abstract class ParameterTemplate

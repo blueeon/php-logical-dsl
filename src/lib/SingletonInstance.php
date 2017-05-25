@@ -5,12 +5,12 @@
  * fileName :   SingletonInstance.php
  */
 
-namespace PHPLogicalDSL\src\lib;
+namespace PHPLogicalDSL\lib;
 
 /**
  * Class SingletonInstance    简单单例class基类
  *
- * @package PHPLogicalDSL\src\lib
+ * @package PHPLogicalDSL\lib
  * @author  YangKe <yangke@xiaomi.com>
  */
 abstract class SingletonInstance

@@ -5,12 +5,12 @@
  * fileName :   RuleFunction.php
  */
 
-namespace PHPLogicalDSL\src\lib;
+namespace PHPLogicalDSL\lib;
 
 /**
  * Class RuleFunction    规则内嵌方法模板
  *
- * @package PHPLogicalDSL\src\lib
+ * @package PHPLogicalDSL\lib
  * @author  YangKe <yangke@xiaomi.com>
  */
 abstract class RuleFunction extends SingletonInstance
