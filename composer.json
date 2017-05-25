@@ -21,8 +21,13 @@
   },
 
   "autoload": {
-    "psr-0": {
-      "PHPLogicalDSL\\": "src/"
+    "psr-4": {
+      "PHPLogicalDSL\\": ""
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PHPLogicalDSL\\Tests\\": "tests/"
     }
   }
 }

@@ -1,10 +1,10 @@
 <?php
-namespace PHPLogicalDSL\lib;
+namespace PHPLogicalDSL\src\lib;
 
 /**
  * Class Parser    解析DSL语句
  *
- * @package PHPLogicalDSL\lib
+ * @package PHPLogicalDSL\src\lib
  * @author  YangKe <yangke@xiaomi.com>
  */
 class Parser extends SingletonInstance

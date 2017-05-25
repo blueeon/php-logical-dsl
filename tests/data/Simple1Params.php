@@ -5,8 +5,8 @@
  * fileName :   Simple1Params.php
  */
 namespace PHPLogicalDSL\tests\data;
+use PHPLogicalDSL\src\lib\ParameterTemplate;
 
-use PHPLogicalDSL\lib\ParameterTemplate;
 
 /**
  * Class Simple1Params

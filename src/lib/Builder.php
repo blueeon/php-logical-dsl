@@ -1,9 +1,10 @@
 <?php
-namespace PHPLogicalDSL\lib;
+namespace PHPLogicalDSL\src\lib;
 
 /**
  * Class Builder 构造DSL语句
  *
+ * @package PHPLogicalDSL\src\lib
  * @author  YangKe <yangke@xiaomi.com>
  */
 class Builder extends SingletonInstance

@@ -4,10 +4,10 @@
  * createTIme:  20170523 22:23
  * fileName :   PHPLogicalDSLTest.php
  */
-namespace PHPLogicalDSL\tests;
+namespace PHPLogicalDSL\tests\unit;
 
-use PHPLogicalDSL\lib\ParameterTemplate;
 use PHPLogicalDSL\tests\data\Simple1Params;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class PHPLogicalDSLTest
@@ -16,33 +16,23 @@ use PHPLogicalDSL\tests\data\Simple1Params;
  * @author  YangKe <yangke@xiaomi.com>
  * @test
  */
-class PHPLogicalDSLTest extends \PHPUnit\Framework\TestCase
+class PHPLogicalDSLTest extends TestCase
 {
     /**
      *
      *
      * @param string            $script
-     * @param ParameterTemplate $request
-     * @param ParameterTemplate $result
+     * @param ParameterTemplate $params
      * @dataProvider addLoadData
      */
     public function testLoad($script, $params)
     {
-        $stack = [];
 
-        $this->assertEquals(0, count($stack));
-
-        array_push($stack, 'foo');
-        $this->assertEquals('foo', $stack[count($stack) - 1]);
-        $this->assertEquals(1, count($stack));
-
-        $this->assertEquals('foo', array_pop($stack));
-        $this->assertEquals(0, count($stack));
     }
 
     public function addLoadData()
     {
-        $dslDataPath = './data';
+        $dslDataPath = __DIR__ . '/../data';
         $handler     = opendir($dslDataPath);
         $files       = [];
         $return      = [];
@@ -54,20 +44,20 @@ class PHPLogicalDSLTest extends \PHPUnit\Framework\TestCase
         $obj        = new Simple1Params();
         $obj->input = [
             'order'   => [
-                'order_id'      => null,
-                'stock_channel' => null,
-                'order_from'    => null,
-                'price'         => null,
-                'mihome'        => null,
+                'order_id'      => 1231245432,
+                'stock_channel' => 'cn-order',
+                'order_from'    => 1,
+                'price'         => 1000.00,
+                'mihome'        => 112,
             ],
             'address' => [
-                'province' => null,
-                'city'     => null,
-                'area'     => null,
+                'province' => 377,
+                'city'     => 37,
+                'area'     => 50,
             ],
         ];
-        $files      = [
-            ['simple1.dsl',],
+        $return     = [
+            ['simple1.dsl', $obj],
         ];
         closedir($handler);
         return $return;
