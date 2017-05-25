@@ -4,14 +4,14 @@
  * createTIme:  20170525 11:16
  * fileName :   Simple1Params.php
  */
-namespace PHPLogicalDSL\tests\data;
-use PHPLogicalDSL\src\lib\ParameterTemplate;
+namespace PHPLogicalDSLTests\data;
+use PHPLogicalDSL\lib\ParameterTemplate;
 
 
 /**
  * Class Simple1Params
  *
- * @package PHPLogicalDSL\tests\data
+ * @package PHPLogicalDSLTests\data
  * @author  YangKe <yangke@xiaomi.com>
  */
 class Simple1Params extends ParameterTemplate

@@ -4,15 +4,15 @@
  * createTIme:  20170523 22:23
  * fileName :   PHPLogicalDSLTest.php
  */
-namespace PHPLogicalDSL\tests\unit;
+namespace PHPLogicalDSLTests\unit;
 
-use PHPLogicalDSL\tests\data\Simple1Params;
+use PHPLogicalDSLTests\data\Simple1Params;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class PHPLogicalDSLTest
  *
- * @package PHPLogicalDSL\tests
+ * @package PHPLogicalDSLTests
  * @author  YangKe <yangke@xiaomi.com>
  * @test
  */
