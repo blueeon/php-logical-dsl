@@ -41,11 +41,11 @@ class PHPLogicalDSL
     private $result = null;
 
     /**
-     * 加载一个规则
+     * 加载一个规则,并且完成语法检查,解析
      *
      * @param $script
      */
-    public function load($script, Request $request, Result $result)
+    public function load($script, $request, $result)
     {
         if ($request instanceof Request && $result instanceof Result) {
             throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41001], 41001);
@@ -55,6 +55,15 @@ class PHPLogicalDSL
         $this->result  = $result;
         $this->parser();
 
+    }
+
+    /**
+     *  根据传入参数,执行一个规则组判断
+     *
+     * @param Request $request
+     */
+    public function execute(Request $request){
+        return $this->result;
     }
 
     /**
@@ -75,7 +84,7 @@ class PHPLogicalDSL
     public function inspect($throw = true)
     {
         $this->ruleIsSet();
-        
+
         $error = [];
         if ($throw) {
             throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41003], 41003);

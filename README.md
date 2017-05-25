@@ -14,14 +14,16 @@ composer require blueeon/php-logical-dsl
 ### Prototype
 
 ```
-rule_name1{
+#Test rules
+RULE_PATTERNS test_tule
+rule_name{
     WHEN  req.order.order_from = 11 AND req.order.stock_channel NOT IN( 'cn-order') AND req.order.price >= 1000
     THEN
         (res.mihome = 100 AND res.price = 100 AND WEIGHT=30),
         (res.mihome = 112 AND res.price = 100 AND WEIGHT=70)
     PRIORITY = 1
 }
-rule_name2{
+rule_name{
     WHEN  req.order.order_from = 11 AND req.order.stock_channel NOT IN( 'cn-order') AND req.order.price >= 1000
     THEN
         (res.mihome = 100 AND res.price = 100 AND WEIGHT=30),
@@ -34,6 +36,7 @@ rule_name2{
     PRIORITY =  [priority]
 }
 ...
+
 ```
 
 ### Example
