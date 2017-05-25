@@ -8,9 +8,8 @@
 namespace PHPLogicalDSL;
 
 use PHPLogicalDSL\lib\Builder;
+use PHPLogicalDSL\lib\ParameterTemplate;
 use PHPLogicalDSL\lib\Parser;
-use PHPLogicalDSL\lib\Request;
-use PHPLogicalDSL\lib\Result;
 
 
 /**
@@ -33,26 +32,32 @@ class PHPLogicalDSL
     /**
      * @var null 请求参数定义
      */
-    private $request = null;
+    private $input = null;
+    /**
+     * @var null 请求参数的值域
+     */
+    private $inputRange = null;
 
     /**
      * @var null 返回结果定义
      */
-    private $result = null;
+    private $output = null;
 
     /**
      * 加载一个规则,并且完成语法检查,解析
      *
      * @param $script
      */
-    public function load($script, $request, $result)
+    public function load($script, ParameterTemplate $params)
     {
-        if ($request instanceof Request && $result instanceof Result) {
+        if ($params instanceof ParameterTemplate) {
             throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41001], 41001);
         }
-        $this->rule    = $script;
-        $this->request = $request;
-        $this->result  = $result;
+        $params->check();
+        $this->rule       = $script;
+        $this->input      = $params->input;
+        $this->inputRange = $params->inputRange;
+        $this->output     = $params->output;
         $this->parser();
 
     }
@@ -62,7 +67,8 @@ class PHPLogicalDSL
      *
      * @param Request $request
      */
-    public function execute(Request $request){
+    public function execute(Request $request)
+    {
         return $this->result;
     }
 

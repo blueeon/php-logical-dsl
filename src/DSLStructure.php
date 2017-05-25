@@ -31,5 +31,7 @@ class DSLStructure
         '41001' => 'Parameter is not legal.',
         '41002' => '$this->rule can not be null',
         '41003' => 'Rule script syntax error.',
+        '41004' => 'Parameter can not be null',
+        '4100%' => 'Parameter must be array',
     ];
 }
