@@ -19,6 +19,11 @@ use PHPUnit\Framework\TestCase;
  */
 class PHPLogicalDSLTest extends TestCase
 {
+
+    protected function setUp()
+    {
+    }
+
     /**
      *
      *
@@ -32,26 +37,21 @@ class PHPLogicalDSLTest extends TestCase
         $obj = new PHPLogicalDSL();
         $obj->load($script, $params);
         $this->assertTrue(true);
-        return [2222];
+        return $obj;
     }
 
     /**
-     *
-     * @return array
-     */
-    public function testParams(){
-        return [1111];
-    }
-    /**
      *  根据传入参数,执行一个规则组判断
      *
-     * @param object $params
-     * @depends testParams
+     * @param object $params 参数对象
+     * @param object $obj    实例化的PHPLogicalDSL对象
+     * @dataProvider addExecuteData
      */
-    public function testExecute($params)
+    public function testExecute($params, $obj)
     {
-        var_dump($params);
+        var_dump($obj->execute($params));
     }
+
     /**
      * 生成load方法测试数据
      *
@@ -85,9 +85,30 @@ class PHPLogicalDSLTest extends TestCase
             ],
         ];
         $return     = [
-            [$scripts['simple1.dsl'], $obj],
+            'simple1.dsl' => [$scripts['simple1.dsl'], $obj],
         ];
 
+        return $return;
+    }
+
+    /**
+     * 返回基准数据
+     *
+     * @param $script
+     * @param $params
+     * @return array
+     */
+    public function addExecuteData()
+    {
+        $return = [];
+        $ret    = $this->addLoadData();
+        foreach ($ret as $key => $item) {
+            $obj    = new PHPLogicalDSL();
+            $params = $item[1];
+            $script = $item[0];
+            $obj->load($script, $params);
+            $return[$key] = [$params, $obj];
+        }
         return $return;
     }
 }
