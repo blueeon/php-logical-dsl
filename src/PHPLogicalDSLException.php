@@ -15,7 +15,7 @@ namespace PHPLogicalDSL;
 class PHPLogicalDSLException extends \Exception
 {
 
-    public function __construct($message, $code, Exception $previous)
+    public function __construct($message, $code, Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

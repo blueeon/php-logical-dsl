@@ -7,6 +7,7 @@
  */
 namespace PHPLogicalDSL;
 
+use phpDocumentor\Reflection\Types\Object_;
 use PHPLogicalDSL\lib\Builder;
 use PHPLogicalDSL\lib\ParameterTemplate;
 use PHPLogicalDSL\lib\Parser;
@@ -47,11 +48,13 @@ class PHPLogicalDSL
     /**
      * 加载一个规则,并且完成语法检查,解析
      *
-     * @param $script
+     * @param string $script DSL script
+     * @param object $params params object extends from ParameterTemplate
+     * @throws PHPLogicalDSLException
      */
-    public function load($script, ParameterTemplate $params)
+    public function load($script, $params)
     {
-        if ($params instanceof ParameterTemplate) {
+        if (!$params instanceof ParameterTemplate) {
             throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41001], 41001);
         }
         $params->check();
@@ -66,11 +69,14 @@ class PHPLogicalDSL
     /**
      *  根据传入参数,执行一个规则组判断
      *
-     * @param Request $request
+     * @param object $params
      */
-    public function execute(Request $request)
+    public function execute($params)
     {
-        return $this->result;
+        if (!$params instanceof ParameterTemplate) {
+            throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41001], 41001);
+        }
+        return $this->output;
     }
 
     /**
@@ -99,14 +105,30 @@ class PHPLogicalDSL
         return $error;
     }
 
+    /**
+     * 链式创建DSL属性结构
+     *
+     * @return mixed|null|static
+     */
     public function builder()
     {
         return Builder::getInstance();
     }
 
-    public function format()
+    /**
+     * 将树形结构重新转换为脚本
+     */
+    public function showText()
     {
 
+    }
+
+    /**
+     *
+     */
+    public function format()
+    {
+        return $this->showText();
     }
 
     /**
