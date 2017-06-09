@@ -16,7 +16,7 @@ namespace PHPLogicalDSL\lib;
 abstract class ParameterTemplate
 {
     /**
-     * @var null|array 输入参数模板
+     * @var null|array 输入参数 模板
      */
     public $input = null;
     /**
@@ -24,7 +24,7 @@ abstract class ParameterTemplate
      */
     public $inputRange = null;
     /**
-     * @var null|array 返回值模板
+     * @var null|array 返回值 模板
      */
     public $output = null;
 

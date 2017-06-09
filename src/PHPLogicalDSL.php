@@ -70,6 +70,7 @@ class PHPLogicalDSL
      *  根据传入参数,执行一个规则组判断
      *
      * @param object $params
+     * @TODO
      */
     public function execute($params)
     {
@@ -81,6 +82,8 @@ class PHPLogicalDSL
 
     /**
      * 返回解析好的语法树
+     *
+     * @TODO
      */
     public function parser()
     {
@@ -93,6 +96,8 @@ class PHPLogicalDSL
 
     /**
      * 语法检查
+     *
+     * @TODO
      */
     public function inspect($throw = true)
     {
@@ -109,6 +114,7 @@ class PHPLogicalDSL
      * 链式创建DSL属性结构
      *
      * @return mixed|null|static
+     * @TODO
      */
     public function builder()
     {
@@ -117,6 +123,8 @@ class PHPLogicalDSL
 
     /**
      * 将树形结构重新转换为脚本
+     *
+     * @TODO
      */
     public function showText()
     {
@@ -124,7 +132,7 @@ class PHPLogicalDSL
     }
 
     /**
-     *
+     * @TODO
      */
     public function format()
     {
@@ -132,7 +140,7 @@ class PHPLogicalDSL
     }
 
     /**
-     * 确保规则原文已经被load
+     * 确保规则原文已经被load,否则抛出异常
      *
      * @throws PHPLogicalDSLException
      */

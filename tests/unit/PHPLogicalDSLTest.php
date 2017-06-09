@@ -49,7 +49,8 @@ class PHPLogicalDSLTest extends TestCase
      */
     public function testExecute($params, $obj)
     {
-        var_dump($obj->execute($params));
+        $res = $obj->execute($params);
+        $this->assertEquals($res, array('express_id' => null));
     }
 
     /**
