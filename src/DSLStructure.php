@@ -27,6 +27,19 @@ class DSLStructure
         'IN',
         'NOT'
     ];
+    /**
+     * WHEN语句的操作符
+     */
+    const WHEN_OPERATOR = [
+        '=',
+        '!=',
+        '>',
+        '>=',
+        '<',
+        '<=',
+        'IN',
+        'NOT',
+    ];
     const ERROR_CODE = [
         '41001' => 'Parameter is not legal.',
         '41002' => '$this->rule can not be null',

@@ -132,6 +132,8 @@ class PHPLogicalDSL
     }
 
     /**
+     * 格式化DSL脚本
+     *
      * @TODO
      */
     public function format()
