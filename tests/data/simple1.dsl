@@ -1,7 +1,7 @@
 /**
 * 一个带权重的简单例子,两个规则之间没有交集
 */
-rule1{
+rule1     {
     when  req.order.order_from = 11 and (req.order.stock_channel NOT IN( 'cn-order') OR req.order.price >= 1000)
     THEN
         (res.mihome = 100 AND res.price = 100 AND WEIGHT=30),

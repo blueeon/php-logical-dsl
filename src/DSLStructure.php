@@ -28,17 +28,28 @@ class DSLStructure
         'NOT'
     ];
     /**
-     * WHEN语句的操作符
+     * WHEN语句的操作符和其优先级
+     *
+     * @see http://baike.baidu.com/item/%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7
      */
     const WHEN_OPERATOR = [
-        '=',
-        '!=',
-        '>',
-        '>=',
-        '<',
-        '<=',
-        'IN',
-        'NOT',
+        '*'     => 4,
+        '/'     => 4,
+        '%'     => 4,
+        '+'     => 5,
+        '-'     => 5,
+        '>'     => 6,
+        '>='    => 6,
+        '<'     => 6,
+        '<='    => 6,
+        'IN'    => 6,
+        'NOTIN' => 6,
+        '='     => 7,
+        '!='    => 7,
+        'AND'   => 11,
+        'OR'    => 12,
+
+
     ];
     const ERROR_CODE = [
         '41001' => 'Parameter is not legal.',

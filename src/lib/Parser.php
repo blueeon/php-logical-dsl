@@ -23,7 +23,6 @@ class Parser extends SingletonInstance
         $scripts = $this->splitRule($script);
         foreach ($scripts as $item) {
             $itemParsed = $this->parseOneRule($item);
-            var_dump($item, $itemParsed);
             exit;
             $parsed = $itemParsed;
         }
@@ -52,6 +51,14 @@ class Parser extends SingletonInstance
     public function splitRule($script)
     {
         $scripts = [];
+        //大括号前有空格去掉
+        $pattern = '/(\s+\{)/';
+        $script  = trim(preg_replace($pattern, '{', $script));
+        //所有括号前后加空格
+        $pattern = '/(\()/';
+        $script  = trim(preg_replace($pattern, ' ( ', $script));
+        $pattern = '/(\))/';
+        $script  = trim(preg_replace($pattern, ' ) ', $script));
         //去除换行符,和多个空白符
         $pattern = '/\s+/';
         $script  = trim(preg_replace($pattern, ' ', $script));
@@ -61,6 +68,12 @@ class Parser extends SingletonInstance
         return $scripts[0];
     }
 
+    /**
+     * 解析一条规则为规则树
+     *
+     * @param $script
+     * @return array
+     */
     public function parseOneRule($script)
     {
         $return = [
@@ -75,16 +88,48 @@ class Parser extends SingletonInstance
         $return['rule_name'] = trim($script[0]);
         //切割出WHEN和THEN语句
         $script = preg_split("/[\s]*(WHEN|THEN)[\s]+/i", trim($script[1]));
-
+        var_dump($script);
         //拆分when语句中的条件子句
-        $whenStr = $script[1];
-        $pattern = '/[\s]+(AND|OR)[\s]+/i';
-        $when    = preg_split($pattern, trim($whenStr));
-        var_dump($script, $whenStr, $when);
-
+        $whenStr                = $script[1];
+        $return['body']['WHEN'] = $this->parseWhen($whenStr);
         //拆分then语句中的结果子句
-        $thenStr = $script[2];
-        $pattern = '';
+        $thenStr                = $script[2];
+        $return['body']['THEN'] = $this->parseThen($thenStr);
+        print_r($return);
+        exit;
+        return $return;
+    }
+
+    public function parseWhen($whenScript)
+    {
+        $return  = [];
+        $pattern = '/[\s]+(AND|OR)[\s]+/i';
+        $when    = preg_split($pattern, trim($whenScript));
+        $return  = [
+            'AND' => [
+                [
+                    '=' => [
+                        'req.order.order_from',
+                        '11',
+                    ],
+                ],
+                [
+                    'OR' => [
+                        'req.order.stock_channel NOT IN( \'cn-order\')',
+                        'req.order.price >= 1000',
+                    ]
+
+                ]
+            ]
+        ];
+        return $return;
+    }
+
+    public function parseThen($thenScript)
+    {
+        $return  = [];
+        $pattern = '/[\s]+(AND|OR)[\s]+/i';
+        $when    = preg_split($pattern, trim($thenScript));
         return $return;
     }
 }
