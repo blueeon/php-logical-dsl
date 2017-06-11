@@ -1,6 +1,8 @@
 <?php
 namespace PHPLogicalDSL\lib;
 
+use PHPLogicalDSL\DSLStructure;
+
 /**
  * Class Parser    解析DSL语句
  *
@@ -100,28 +102,99 @@ class Parser extends SingletonInstance
         return $return;
     }
 
+    /**
+     * 将when语句解析为前缀表达式
+     *
+     * @param $whenScript
+     * @return array
+     */
     public function parseWhen($whenScript)
     {
-        $return  = [];
-        $pattern = '/[\s]+(AND|OR)[\s]+/i';
-        $when    = preg_split($pattern, trim($whenScript));
-        $return  = [
-            'AND' => [
-                [
-                    '=' => [
-                        'req.order.order_from',
-                        '11',
-                    ],
-                ],
-                [
-                    'OR' => [
-                        'req.order.stock_channel NOT IN( \'cn-order\')',
-                        'req.order.price >= 1000',
-                    ]
-
-                ]
-            ]
+        $return         = [];
+        $pattern        = '/[\s]+(AND|OR)[\s]+/i';
+        $when           = preg_split($pattern, trim($whenScript));
+        $whenScriptList = [
+            'req.order.order_from',
+            '=',
+            '11',
+            'and',
+            '(',
+            'req.order.stock_channel',
+            'NOTIN',
+            ['cn-order', 'cn-tmall'],
+            'OR',
+            'req.order.price',
+            '>=', '1000',
+            ')',
         ];
+        $return         = $this->parseWhenToPrefixExpression($whenScriptList);
+        return $return;
+    }
+
+    /**
+     * 根据传入的中缀表达式列表,返回前缀表达式栈
+     *
+     * @param array $whenScript
+     * @return array
+     */
+    public function parseWhenToPrefixExpression(array $whenScript)
+    {
+        $return   = [
+            'AND',
+            '=',
+            'req.order.order_from',
+            '11',
+            'OR',
+            'NOTIN',
+            'req.order.stock_channel',
+            ['cn-order'],
+            '>=',
+            'req.order.price',
+            '1000',
+        ];
+        $operator = array_keys(DSLStructure::WHEN_OPERATOR);
+        $S1       = [];//结果栈（数值）
+        $S2       = [];//运算符栈
+        foreach (array_reverse($whenScript) as $item) {
+
+            //运算符
+            if (!is_array($item) && in_array(strtoupper(trim($item)), $operator)) {
+                $item = strtoupper(trim($item));
+                while (1) {
+                    if (empty($S1) || end($S1) == ')') {
+                        array_push($S1, $item);
+                        break;
+                    } elseif (DSLStructure::WHEN_OPERATOR[$item] <= DSLStructure::WHEN_OPERATOR[end($S1)]) {
+                        array_push($S1, $item);
+                        break;
+                    } else {
+                        array_push($S2, array_pop($S1));
+                    }
+                }
+            } //遇到括号
+            elseif (!is_array($item) && in_array(trim($item), ['(', ')'])) {
+                if ($item == ')') {
+                    array_push($S1, $item);
+                } else {
+                    while (1) {
+                        $S1Op = array_pop($S1);
+                        if ($S1Op == ')') {
+                            break;
+                        }
+                        array_push($S2, $S1Op);
+                    }
+                }
+            } //数值直接入栈
+            else {
+                array_push($S2, $item);
+            }
+//            echo "\n----\nITEM: " . $item . "\nS2: " . implode(' , ', $S2) . "\nS1: " . implode(' , ', $S1);
+        }
+        //将$1中剩余操作符依次弹出并压入$2
+        while (!empty($S1)) {
+            array_push($S2, array_pop($S1));
+        }
+        $return = array_reverse($S2);
         return $return;
     }
 
