@@ -294,8 +294,8 @@ class Parser extends SingletonInstance
     /**
      * 从前缀表达式转换回中缀表达式逻辑树
      *
-     * @TODO
      * @param $parsed
+     * @return array|mixed
      */
     public function prefixToInfixTree($parsed)
     {
@@ -320,6 +320,12 @@ class Parser extends SingletonInstance
         return $calStack;
     }
 
+    /**
+     * 中缀表达式转换为list
+     *
+     * @param $infixTree
+     * @return array
+     */
     public function InfixTreeToList($infixTree)
     {
         $infixList = [];
