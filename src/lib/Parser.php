@@ -19,16 +19,16 @@ class Parser extends SingletonInstance
      */
     public function parse($script)
     {
-        $parsed = [];
-        echo "\n\n";
-        $script  = $this->removeAnnotation($script);
+        $parsed = [
+            'annotation' => '',
+            'rules'      => [],
+        ];
+        list($parsed['annotation'], $script) = $this->removeAnnotation($script);
         $scripts = $this->splitRule($script);
         foreach ($scripts as $item) {
-            $itemParsed = $this->parseOneRule($item);
-            exit;
-            $parsed = $itemParsed;
+            $itemParsed        = $this->parseOneRule($item);
+            $parsed['rules'][] = $itemParsed;
         }
-        echo "\n\n";
         return $parsed;
     }
 
@@ -41,7 +41,8 @@ class Parser extends SingletonInstance
     public function removeAnnotation($script)
     {
         $pattern = "/\/\*.*?\*\//s";
-        return preg_replace($pattern, '', $script);
+        preg_match($pattern, $script, $annotation);
+        return [$annotation[0], preg_replace($pattern, '', $script)];
     }
 
     /**
@@ -90,15 +91,12 @@ class Parser extends SingletonInstance
         $return['rule_name'] = trim($script[0]);
         //切割出WHEN和THEN语句
         $script = preg_split("/[\s]*(WHEN|THEN)[\s]+/i", trim($script[1]));
-        var_dump($script);
         //拆分when语句中的条件子句
         $whenStr                = $script[1];
         $return['body']['WHEN'] = $this->parseWhen($whenStr);
         //拆分then语句中的结果子句
         $thenStr                = $script[2];
         $return['body']['THEN'] = $this->parseThen($thenStr);
-        print_r($return);
-        exit;
         return $return;
     }
 
@@ -185,9 +183,75 @@ class Parser extends SingletonInstance
 
     public function parseThen($thenScript)
     {
-        $return  = [];
-        $pattern = '/[\s]+(AND|OR)[\s]+/i';
-        $when    = preg_split($pattern, trim($thenScript));
+        $return = [];
+
+        $return = [
+            [
+                'WEIGHT' => 30,
+                'RESULT' => [
+                    'res.mihome' => 100,
+                    'res.price'  => 100,
+                ],
+            ],
+            [
+                'WEIGHT' => 70,
+                'RESULT' => [
+                    'res.mihome' => 112,
+                    'res.price'  => 100,
+                ],
+            ]
+        ];
+        var_dump($thenScript);
+        //如果THEN语句是单条结果,添加权重100
+        $pattern = '/(\()[^\)]+(\))/i';
+        preg_match_all($pattern, $thenScript, $subThen);
+        $subThen = $subThen[0];
+        if (empty($subThen[0])) {
+            $subThen[] = "({$thenScript} AND WEIGHT=100)";
+        }
+        foreach ($subThen as $item) {
+            $returnItem = [];
+            $item       = trim($item, '()');
+            $item       = explode('AND', $item);
+            foreach ($item as $subItem) {
+                $subItem = explode('=', $subItem);
+                if (strtoupper(trim($subItem[0])) == 'WEIGHT') {
+                    $returnItem['WEIGHT'] = trim($subItem[1]);
+                } else {
+                    $returnItem['RESULT'][trim($subItem[0])] = trim($subItem[1]);
+                }
+
+            }
+            $return[] = $returnItem;
+        }
+        var_dump($return);
+        exit;
         return $return;
+    }
+
+    /**
+     * 将解析过的语法树,转回文本
+     *
+     * @param $parsed
+     */
+    public function showText($parsed)
+    {
+        var_dump($parsed);
+        $script = $parsed['annotation'] . "\n";
+        foreach ($parsed['rules'] as $item) {
+
+        }
+        exit;
+    }
+
+    /**
+     * 从前缀表达式转换回中缀表达式
+     *
+     * @TODO
+     * @param $parsed
+     */
+    public function prefixToInfix($parsed)
+    {
+
     }
 }
