@@ -29,6 +29,9 @@ class Parser extends SingletonInstance
             $itemParsed        = $this->parseOneRule($item);
             $parsed['rules'][] = $itemParsed;
         }
+
+        var_dump($script, $parsed);
+        exit;
         return $parsed;
     }
 
@@ -82,21 +85,33 @@ class Parser extends SingletonInstance
         $return = [
             'rule_name' => '',
             'body'      => [
-                'WHEN' => [],
-                'THEN' => [],
+                'WHEN'     => [],
+                'THEN'     => [],
+                'PRIORITY' => 0,
             ],
         ];
         //按照{}切割出rule name 和 rule正文
         $script              = preg_split("/(\}|\{)/", $script);
         $return['rule_name'] = trim($script[0]);
+
+        //解析出优先级,优先级为0即优先级最低,相同优先级执行顺序不定
+        $pattern = '/[\s]*PRIORITY[\s]*=[\s]*\d+/i';
+        var_dump($script[1]);
+        preg_match($pattern, $script[1], $match);
+        var_dump($match);
+        $script[1] = preg_replace($pattern, '', $script[1]);
+        var_dump($script[1]);
+        exit;
         //切割出WHEN和THEN语句
         $script = preg_split("/[\s]*(WHEN|THEN)[\s]+/i", trim($script[1]));
+
         //拆分when语句中的条件子句
         $whenStr                = $script[1];
         $return['body']['WHEN'] = $this->parseWhen($whenStr);
         //拆分then语句中的结果子句
         $thenStr                = $script[2];
         $return['body']['THEN'] = $this->parseThen($thenStr);
+
         return $return;
     }
 

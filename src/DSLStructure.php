@@ -21,6 +21,7 @@ class DSLStructure
     const KEY_WORDS = [
         'WHEN',
         'THEN',
+        'PRIORITY',
         //Logical symbol
         'AND',
         'OR',
