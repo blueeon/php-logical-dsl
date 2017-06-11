@@ -111,22 +111,7 @@ class Parser extends SingletonInstance
     public function parseWhen($whenScript)
     {
         $return = [];
-
-        $whenScriptList = [
-            'req.order.order_from',
-            '=',
-            '11',
-            'and',
-            '(',
-            'req.order.stock_channel',
-            'NOTIN',
-            ['cn-order', 'cn-tmall'],
-            'OR',
-            'req.order.price',
-            '>=', '1000',
-            ')',
-        ];
-        //处理 IN 和NOT IN语句之后的括号内容
+        //处理 IN 和NOT IN语句之后的括号内容,去掉内部的空格
         $pattern = '/IN\s*' . '(\()' . '[^\)]*' . '(\))' . '/i';
         preg_match_all($pattern, $whenScript, $matches);
         $inFrom = [];
@@ -134,13 +119,14 @@ class Parser extends SingletonInstance
         foreach ($matches[0] as $match) {
             $inFrom[] = $match;
 
-            $inTo[]   = str_ireplace('IN(', 'IN (', str_replace(' ', '', $match));
+            $inTo[] = str_ireplace('IN(', 'IN (', str_replace(' ', '', $match));
         }
         $whenScript = str_ireplace($inFrom, $inTo, $whenScript);
-        //处理NOT IN
-        $whenScript     = str_ireplace('NOT IN', 'NOTIN', $whenScript);
+        //替换NOT IN
+        $whenScript = str_ireplace('NOT IN', 'NOTIN', $whenScript);
+
         $whenScriptList = explode(' ', $whenScript);
-        $return = $this->parseWhenToPrefixExpression($whenScriptList);
+        $return         = $this->parseWhenToPrefixExpression($whenScriptList);
         return $return;
     }
 
