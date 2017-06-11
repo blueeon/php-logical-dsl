@@ -140,7 +140,7 @@ class Parser extends SingletonInstance
     public function parseWhenToPrefixExpression(array $whenScript)
     {
         $operator = array_keys(DSLStructure::WHEN_OPERATOR);
-        $S1       = [];//结果栈（数值）
+        $S1       = [];//数值、中间结果栈
         $S2       = [];//运算符栈
         foreach (array_reverse($whenScript) as $item) {
 
@@ -175,7 +175,6 @@ class Parser extends SingletonInstance
             else {
                 array_push($S2, $item);
             }
-//            echo "\n----\nITEM: " . $item . "\nS2: " . implode(' , ', $S2) . "\nS1: " . implode(' , ', $S1);
         }
         //将$1中剩余操作符依次弹出并压入$2
         while (!empty($S1)) {
