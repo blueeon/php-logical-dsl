@@ -103,16 +103,15 @@ class Parser extends SingletonInstance
     }
 
     /**
-     * 将when语句解析为前缀表达式
+     * 将WHEN语句解析为前缀表达式
      *
      * @param $whenScript
      * @return array
      */
     public function parseWhen($whenScript)
     {
-        $return         = [];
-        $pattern        = '/[\s]+(AND|OR)[\s]+/i';
-        $when           = preg_split($pattern, trim($whenScript));
+        $return = [];
+
         $whenScriptList = [
             'req.order.order_from',
             '=',
@@ -127,7 +126,21 @@ class Parser extends SingletonInstance
             '>=', '1000',
             ')',
         ];
-        $return         = $this->parseWhenToPrefixExpression($whenScriptList);
+        //处理 IN 和NOT IN语句之后的括号内容
+        $pattern = '/IN\s*' . '(\()' . '[^\)]*' . '(\))' . '/i';
+        preg_match_all($pattern, $whenScript, $matches);
+        $inFrom = [];
+        $inTo   = [];
+        foreach ($matches[0] as $match) {
+            $inFrom[] = $match;
+
+            $inTo[]   = str_ireplace('IN(', 'IN (', str_replace(' ', '', $match));
+        }
+        $whenScript = str_ireplace($inFrom, $inTo, $whenScript);
+        //处理NOT IN
+        $whenScript     = str_ireplace('NOT IN', 'NOTIN', $whenScript);
+        $whenScriptList = explode(' ', $whenScript);
+        $return = $this->parseWhenToPrefixExpression($whenScriptList);
         return $return;
     }
 
