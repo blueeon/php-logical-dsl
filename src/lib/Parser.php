@@ -181,27 +181,15 @@ class Parser extends SingletonInstance
         return $return;
     }
 
+    /**
+     * 解析Then语句
+     *
+     * @param $thenScript
+     * @return array
+     */
     public function parseThen($thenScript)
     {
         $return = [];
-
-        $return = [
-            [
-                'WEIGHT' => 30,
-                'RESULT' => [
-                    'res.mihome' => 100,
-                    'res.price'  => 100,
-                ],
-            ],
-            [
-                'WEIGHT' => 70,
-                'RESULT' => [
-                    'res.mihome' => 112,
-                    'res.price'  => 100,
-                ],
-            ]
-        ];
-        var_dump($thenScript);
         //如果THEN语句是单条结果,添加权重100
         $pattern = '/(\()[^\)]+(\))/i';
         preg_match_all($pattern, $thenScript, $subThen);
@@ -224,8 +212,6 @@ class Parser extends SingletonInstance
             }
             $return[] = $returnItem;
         }
-        var_dump($return);
-        exit;
         return $return;
     }
 
