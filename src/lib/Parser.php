@@ -139,19 +139,6 @@ class Parser extends SingletonInstance
      */
     public function parseWhenToPrefixExpression(array $whenScript)
     {
-        $return   = [
-            'AND',
-            '=',
-            'req.order.order_from',
-            '11',
-            'OR',
-            'NOTIN',
-            'req.order.stock_channel',
-            ['cn-order'],
-            '>=',
-            'req.order.price',
-            '1000',
-        ];
         $operator = array_keys(DSLStructure::WHEN_OPERATOR);
         $S1       = [];//结果栈（数值）
         $S2       = [];//运算符栈
