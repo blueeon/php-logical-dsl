@@ -30,7 +30,7 @@ class Parser extends SingletonInstance
             $parsed['rules'][] = $itemParsed;
         }
 
-        var_dump($script, $parsed);
+        echo($this->showText($parsed));
         exit;
         return $parsed;
     }
@@ -96,12 +96,12 @@ class Parser extends SingletonInstance
 
         //解析出优先级,优先级为0即优先级最低,相同优先级执行顺序不定
         $pattern = '/[\s]*PRIORITY[\s]*=[\s]*\d+/i';
-        var_dump($script[1]);
         preg_match($pattern, $script[1], $match);
-        var_dump($match);
+        if (!empty($match)) {
+            $return['body']['PRIORITY'] = trim($match[0], 'PRIORITY= ');
+        }
+        //用完去掉PRIORITY
         $script[1] = preg_replace($pattern, '', $script[1]);
-        var_dump($script[1]);
-        exit;
         //切割出WHEN和THEN语句
         $script = preg_split("/[\s]*(WHEN|THEN)[\s]+/i", trim($script[1]));
 
@@ -111,7 +111,6 @@ class Parser extends SingletonInstance
         //拆分then语句中的结果子句
         $thenStr                = $script[2];
         $return['body']['THEN'] = $this->parseThen($thenStr);
-
         return $return;
     }
 
@@ -156,7 +155,7 @@ class Parser extends SingletonInstance
         $S2       = [];//运算符栈
         foreach (array_reverse($whenScript) as $item) {
 
-            //运算符
+            //遇到运算符
             if (!is_array($item) && in_array(strtoupper(trim($item)), $operator)) {
                 $item = strtoupper(trim($item));
                 while (1) {
@@ -234,25 +233,134 @@ class Parser extends SingletonInstance
      * 将解析过的语法树,转回文本
      *
      * @param $parsed
+     * @TODO
      */
     public function showText($parsed)
     {
-        var_dump($parsed);
-        $script = $parsed['annotation'] . "\n";
+        $script = $parsed['annotation'] . PHP_EOL;
         foreach ($parsed['rules'] as $item) {
+            $script .= "{$item['rule_name']}{" . PHP_EOL;
+            $spaceLen = 8;
+            $script .= $this->space(4) . "WHEN\n" . $this->space($spaceLen);
+            $tmpWhen = $this->InfixTreeToList($this->prefixToInfixTree($item['body']['WHEN']));
+            foreach ($tmpWhen as $tmpWhenItem) {
+                if (in_array($tmpWhenItem, ['AND', 'OR'])) {
+                    $script .= "\n" . $this->space($spaceLen) . $tmpWhenItem . ' ';
+                } elseif ($tmpWhenItem == '(') {
+                    $spaceLen += 4;
+                    $script .= $tmpWhenItem . "\n" . $this->space($spaceLen);
+                } elseif ($tmpWhenItem == ')') {
+                    $spaceLen -= 4;
+                    $script .= "\n" . $this->space($spaceLen) . $tmpWhenItem;
+                } elseif ($tmpWhenItem == 'NOTIN') {
+                    $script .= 'NOT IN' . ' ';
+                } else {
+                    $script .= $tmpWhenItem . ' ';
+                }
 
+            }
+            $script .= PHP_EOL;
+            $script .= "    THEN " . PHP_EOL;
+            $tmpThen = [];
+            foreach ($item['body']['THEN'] as $subItem) {
+                $tmpThenScript = [];
+                foreach ($subItem['RESULT'] as $resultKey => $resultItem) {
+                    $tmpThenScript[] = "{$resultKey} = {$resultItem}";
+                }
+                if (isset($subItem['WEIGHT'])) {
+                    $tmpThenScript[] = "WEIGHT = {$subItem['WEIGHT']}";
+                }
+                $tmpThen [] = $this->space($spaceLen) . "( " . implode(' AND ', $tmpThenScript) . " )";
+            }
+            $script .= implode(',' . PHP_EOL, $tmpThen) . PHP_EOL;
+            $script .= "    PRIORITY = 0" . PHP_EOL;
+            $script .= "}" . PHP_EOL;
         }
-        exit;
+        return $script;
     }
 
     /**
-     * 从前缀表达式转换回中缀表达式
+     * 返回定长空格
+     *
+     * @param $num
+     * @return string
+     */
+    public function space($num)
+    {
+        $return = '';
+        while ($num--) {
+            $return .= ' ';
+        }
+        return $return;
+    }
+
+    /**
+     * 从前缀表达式转换回中缀表达式逻辑树
      *
      * @TODO
      * @param $parsed
      */
-    public function prefixToInfix($parsed)
+    public function prefixToInfixTree($parsed)
     {
+        $return   = [];
+        $calStack = [];
+        $operator = array_keys(DSLStructure::WHEN_OPERATOR);
+        while ($item = array_pop($parsed)) {
+            //运算符
+            if (in_array($item, $operator)) {
+                $left  = array_pop($calStack);
+                $right = array_pop($calStack);
+                array_push($parsed, [
+                    $left,
+                    $item,
+                    $right
+                ]);
+            } else {
+                array_push($calStack, $item);
+            }
+        }
+        $calStack = array_pop($calStack);
+        return $calStack;
+    }
 
+    public function InfixTreeToList($infixTree)
+    {
+        $infixList = [];
+        $left      = $infixTree[0];
+        $operator  = $infixTree[1];
+        $right     = $infixTree[2];
+        //主句中的运算符优先级大于等于子句运算符优先级,需要加括号
+        //有下级结构,则取递归值
+
+        //LEFT
+        if (is_array($left)) {
+            if (DSLStructure::WHEN_OPERATOR[$operator] < DSLStructure::WHEN_OPERATOR[$left[1]]) {
+                $infixList[] = '(';
+                $infixList   = array_merge($infixList, $this->InfixTreeToList($left));
+                $infixList[] = ')';
+            } else {
+                $infixList = array_merge($infixList, $this->InfixTreeToList($left));
+            }
+        } else {
+            $infixList [] = $left;
+        }
+
+        //OPERATOR
+        $infixList[] = $operator;
+
+        //LEFT
+        if (is_array($right)) {
+            if (DSLStructure::WHEN_OPERATOR[$operator] < DSLStructure::WHEN_OPERATOR[$right[1]]) {
+                $infixList[] = '(';
+                $infixList   = array_merge($infixList, $this->InfixTreeToList($right));
+                $infixList[] = ')';
+            } else {
+
+                $infixList = array_merge($infixList, $this->InfixTreeToList($right));
+            }
+        } else {
+            $infixList[] = $right;
+        }
+        return $infixList;
     }
 }
