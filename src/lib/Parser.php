@@ -29,9 +29,6 @@ class Parser extends SingletonInstance
             $itemParsed        = $this->parseOneRule($item);
             $parsed['rules'][] = $itemParsed;
         }
-
-        echo($this->showText($parsed));
-        exit;
         return $parsed;
     }
 
