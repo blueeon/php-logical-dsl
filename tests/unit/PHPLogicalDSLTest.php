@@ -38,6 +38,7 @@ class PHPLogicalDSLTest extends TestCase
         $obj->load($script, $params);
         $this->assertTrue(true);
         var_dump($obj->parser());
+        var_dump($obj->format());
         return $obj;
     }
 
