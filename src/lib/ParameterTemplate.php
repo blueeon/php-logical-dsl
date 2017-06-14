@@ -18,15 +18,15 @@ abstract class ParameterTemplate
     /**
      * @var null|array 输入参数 模板
      */
-    public $input = null;
+    protected $input = null;
     /**
      * @var null|array 输入参数值域
      */
-    public $inputRange = null;
+    protected $inputRange = null;
     /**
      * @var null|array 返回值 模板
      */
-    public $output = null;
+    protected $output = null;
 
     /**
      * 检查参数是否被设置正确
@@ -39,5 +39,58 @@ abstract class ParameterTemplate
         if (!(is_array($this->input) && is_array($this->inputRange) && is_array($this->output))) {
             throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41003], 41003);
         }
+    }
+
+    /**
+     * set and check input
+     *
+     * @param $input
+     * @TODO
+     */
+    public function setInput($input)
+    {
+        return $this->input = $input;
+    }
+
+    /**
+     * get $input
+     *
+     * @return array|null
+     */
+    public function getInput()
+    {
+        return $this->input;
+    }
+
+    /**
+     * 获取输入值域
+     *
+     * @return array|null
+     */
+    public function getInputRange()
+    {
+        return $this->inputRange;
+    }
+
+    /**
+     * 获取输出模板
+     *
+     * @return array|null
+     */
+    public function getOutput()
+    {
+        return $this->output;
+    }
+
+    /**
+     * 设置
+     *
+     * @param $key
+     * @param $value
+     * @TODO
+     */
+    public function setOutput($key, $value)
+    {
+
     }
 }

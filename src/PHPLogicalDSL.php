@@ -7,7 +7,6 @@
  */
 namespace PHPLogicalDSL;
 
-use phpDocumentor\Reflection\Types\Object_;
 use PHPLogicalDSL\lib\Builder;
 use PHPLogicalDSL\lib\ParameterTemplate;
 use PHPLogicalDSL\lib\Parser;
@@ -57,13 +56,13 @@ class PHPLogicalDSL
         if (!$params instanceof ParameterTemplate) {
             throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41001], 41001);
         }
+        //检查参数是否已经按照参数模板被设置
         $params->check();
         $this->rule       = $script;
-        $this->input      = $params->input;
-        $this->inputRange = $params->inputRange;
-        $this->output     = $params->output;
+        $this->input      = $params->getInput();
+        $this->inputRange = $params->getInputRange();
+        $this->output     = $params->getOutput();
         $this->parser();
-
     }
 
     /**

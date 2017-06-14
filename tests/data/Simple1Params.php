@@ -5,6 +5,7 @@
  * fileName :   Simple1Params.php
  */
 namespace PHPLogicalDSLTests\data;
+
 use PHPLogicalDSL\lib\ParameterTemplate;
 
 
@@ -19,7 +20,7 @@ class Simple1Params extends ParameterTemplate
     /**
      * @var array
      */
-    public $input = [
+    protected $input = [
         'order'   => [
             'order_id'      => null,
             'stock_channel' => null,
@@ -33,7 +34,7 @@ class Simple1Params extends ParameterTemplate
             'area'     => null,
         ],
     ];
-    public $inputRange = [
+    protected $inputRange = [
         'order'   => [
             'order_id'      => null,
             'stock_channel' => '("cn-order","cn-tmall","cn-mj","cn-taobao")', //a string set
@@ -47,7 +48,7 @@ class Simple1Params extends ParameterTemplate
             'area'     => '(36:60,62,66:100)', //from 36 to 60 AND from 66 to 100
         ],
     ];
-    public $output = [
+    protected $output = [
         'express_id' => null,
     ];
 }

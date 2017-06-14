@@ -37,9 +37,9 @@ class PHPLogicalDSLTest extends TestCase
         $obj = new PHPLogicalDSL();
         $obj->load($script, $params);
         $this->assertTrue(true);
+        echo "\n\n####################################################\n";
         var_dump($obj->parser());
         var_dump($obj->format());
-        return $obj;
     }
 
     /**
@@ -62,18 +62,9 @@ class PHPLogicalDSLTest extends TestCase
      */
     public function addLoadData()
     {
-        $dslDataPath = __DIR__ . '/../data/';
-        $handler     = opendir($dslDataPath);
-        $scripts     = [];
-        $return      = [];
-        while (($filename = readdir($handler)) !== false) {//务必使用!==，防止目录下出现类似文件名“0”等情况
-            if ($filename != "." && $filename != "..") {
-                $scripts[$filename] = file_get_contents($dslDataPath . $filename);
-            }
-        }
-        closedir($handler);
-        $obj        = new Simple1Params();
-        $obj->input = [
+
+        $obj = new Simple1Params();
+        $obj->setInput([
             'order'   => [
                 'order_id'      => 1231245432,
                 'stock_channel' => 'cn-order',
@@ -86,10 +77,22 @@ class PHPLogicalDSLTest extends TestCase
                 'city'     => 37,
                 'area'     => 50,
             ],
-        ];
-        $return     = [
-            'simple1.dsl' => [$scripts['simple1.dsl'], $obj],
-        ];
+        ]);
+
+        $dslDataPath = __DIR__ . '/../data/';
+        $handler     = opendir($dslDataPath);
+        $scripts     = [];
+        $return      = [];
+        while (($filename = readdir($handler)) !== false) {//务必使用!==，防止目录下出现类似文件名“0”等情况
+            if ($filename != "." && $filename != "..") {
+                $scripts[$filename] = file_get_contents($dslDataPath . $filename);
+                $return[$filename]  = [
+                    $scripts[$filename],
+                    $obj
+                ];
+            }
+        }
+        closedir($handler);
 
         return $return;
     }
