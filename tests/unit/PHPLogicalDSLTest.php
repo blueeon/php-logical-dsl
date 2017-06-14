@@ -25,7 +25,7 @@ class PHPLogicalDSLTest extends TestCase
     }
 
     /**
-     *
+     * 测试load是否正确执行
      *
      * @param string $script
      * @param object $params
@@ -36,10 +36,19 @@ class PHPLogicalDSLTest extends TestCase
     {
         $obj = new PHPLogicalDSL();
         $obj->load($script, $params);
-        $this->assertTrue(true);
-        echo "\n\n####################################################\n";
-        var_dump($obj->parser());
-        var_dump($obj->format());
+        $parsed = $obj->parser();
+        $this->assertTrue(!empty($parsed));
+        $this->assertTrue(!empty($parsed['rules']) && count($parsed['rules']) >= 1);
+        foreach ($parsed['rules'] as $rule) {
+            $this->assertTrue(!empty($rule['rule_name']));
+            $this->assertTrue(!empty($rule['body']));
+            $this->assertTrue(!empty($rule['body']['WHEN']));
+            $this->assertTrue(!empty($rule['body']['THEN']));
+            $this->assertTrue(isset($rule['body']['PRIORITY']) && $rule['body']['PRIORITY'] >= 0);
+        }
+        $obj2 = new PHPLogicalDSL();
+        $obj2->load($script, $params);
+        $this->assertEquals($obj->format(), $obj2->format());
     }
 
     /**
@@ -52,7 +61,8 @@ class PHPLogicalDSLTest extends TestCase
     public function testExecute($params, $obj)
     {
         $res = $obj->execute($params);
-        $this->assertEquals($res, array('express_id' => null));
+        var_dump($res);
+//        $this->assertEquals($res, array('express_id' => null));
     }
 
     /**
@@ -62,29 +72,13 @@ class PHPLogicalDSLTest extends TestCase
      */
     public function addLoadData()
     {
-
-        $obj = new Simple1Params();
-        $obj->setInput([
-            'order'   => [
-                'order_id'      => 1231245432,
-                'stock_channel' => 'cn-order',
-                'order_from'    => 1,
-                'price'         => 1000.00,
-                'mihome'        => 112,
-            ],
-            'address' => [
-                'province' => 377,
-                'city'     => 37,
-                'area'     => 50,
-            ],
-        ]);
-
+        $obj         = new Simple1Params();
         $dslDataPath = __DIR__ . '/../data/';
         $handler     = opendir($dslDataPath);
         $scripts     = [];
         $return      = [];
         while (($filename = readdir($handler)) !== false) {//务必使用!==，防止目录下出现类似文件名“0”等情况
-            if ($filename != "." && $filename != "..") {
+            if ($filename != "." && $filename != ".." && strstr($filename, '.dsl') != false) {
                 $scripts[$filename] = file_get_contents($dslDataPath . $filename);
                 $return[$filename]  = [
                     $scripts[$filename],
@@ -93,7 +87,6 @@ class PHPLogicalDSLTest extends TestCase
             }
         }
         closedir($handler);
-
         return $return;
     }
 
@@ -110,10 +103,28 @@ class PHPLogicalDSLTest extends TestCase
         $ret    = $this->addLoadData();
         foreach ($ret as $key => $item) {
             $obj    = new PHPLogicalDSL();
-            $params = $item[1];
             $script = $item[0];
+            $params = $item[1];
+            //构造规则引擎
             $obj->load($script, $params);
-            $return[$key] = [$params, $obj];
+            //构造参数
+            $paramsObj = new Simple1Params();
+            $paramsObj->setInput([
+                'order'   => [
+                    'order_id'      => 1231245432,
+                    'stock_channel' => 'cn-order',
+                    'order_from'    => 12,
+                    'price'         => 1000.00,
+                    'mihome'        => 112,
+                ],
+                'address' => [
+                    'province' => 377,
+                    'city'     => 37,
+                    'area'     => 50,
+                ],
+            ]);
+
+            $return[$key] = [$paramsObj, $obj];
         }
         return $return;
     }

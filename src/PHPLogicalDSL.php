@@ -8,6 +8,7 @@
 namespace PHPLogicalDSL;
 
 use PHPLogicalDSL\lib\Builder;
+use PHPLogicalDSL\lib\Executor;
 use PHPLogicalDSL\lib\ParameterTemplate;
 use PHPLogicalDSL\lib\Parser;
 
@@ -68,7 +69,7 @@ class PHPLogicalDSL
     /**
      *  根据传入参数,执行一个规则组判断
      *
-     * @param object $params
+     * @param array $params
      * @return null
      * @throws PHPLogicalDSLException
      */
@@ -77,6 +78,8 @@ class PHPLogicalDSL
         if (!$params instanceof ParameterTemplate) {
             throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41001], 41001);
         }
+        $input        = $params->getInput();
+        $this->output = Executor::getInstance()->execute($this->ruleParsed, $input);
         return $this->output;
     }
 

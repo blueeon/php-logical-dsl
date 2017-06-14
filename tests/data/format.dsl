@@ -6,6 +6,6 @@ rule2{ WHEN  req.order.order_from = 11 AND req.order.stock_channel NOT IN( 'cn-o
         (res.mihome = 110 AND         WEIGHT=10),
         (res.mihome = 114
         AND WEIGHT=90)
-
+            PRIORITY = 10
 
 }

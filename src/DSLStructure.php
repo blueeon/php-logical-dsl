@@ -57,6 +57,10 @@ class DSLStructure
         '41002' => '$this->rule can not be null',
         '41003' => 'Rule script syntax error.',
         '41004' => 'Parameter can not be null',
-        '4100%' => 'Parameter must be array',
+        '41005' => 'Parameter must be array',
+        '41006' => 'Operator is not support.',
+        '41007' => 'Input must be begin with req.',
+        '41008' => 'Input params can only contain three layers.',
+        '41009' => 'Can not find value in Input params',
     ];
 }
