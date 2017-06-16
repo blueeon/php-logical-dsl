@@ -6,6 +6,7 @@
  */
 namespace PHPLogicalDSLTests\unit;
 
+use PHPLogicalDSL\lib\Parser;
 use PHPLogicalDSL\PHPLogicalDSL;
 use PHPLogicalDSLTests\data\Simple1Params;
 use PHPUnit\Framework\TestCase;
@@ -48,20 +49,21 @@ class PHPLogicalDSLTest extends TestCase
         }
         $obj2 = new PHPLogicalDSL();
         $obj2->load($script, $params);
+
         $this->assertEquals($obj->format(), $obj2->format());
     }
 
     /**
      *  根据传入参数,执行一个规则组判断
      *
-     * @param object $params 参数对象
-     * @param object $obj    实例化的PHPLogicalDSL对象
+     * @param ParameterTemplate $params 参数对象
+     * @param PHPLogicalDSL     $obj    实例化的PHPLogicalDSL对象
      * @dataProvider addExecuteData
      */
     public function testExecute($params, $obj)
     {
         $res = $obj->execute($params);
-        var_dump($res);
+        var_dump($obj->format(), $res);
 //        $this->assertEquals($res, array('express_id' => null));
     }
 
@@ -113,7 +115,8 @@ class PHPLogicalDSLTest extends TestCase
                 'order'   => [
                     'order_id'      => 1231245432,
                     'stock_channel' => 'cn-order',
-                    'order_from'    => 12,
+                    'order_from'    => 11,
+                    'order_type'    => 10,
                     'price'         => 1000.00,
                     'mihome'        => 112,
                 ],

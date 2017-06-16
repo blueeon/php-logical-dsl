@@ -61,6 +61,9 @@ class DSLStructure
         '41006' => 'Operator is not support.',
         '41007' => 'Input must be begin with req.',
         '41008' => 'Input params can only contain three layers.',
-        '41009' => 'Can not find value in Input params',
+        '41009' => 'Can not find value in params',
+        '41010' => 'Output params can only contain 1 layers.',
+        '41011' => 'Params is not defined.',
+        '41012' => 'Can not find any rule to match.',
     ];
 }

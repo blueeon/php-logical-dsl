@@ -7,6 +7,9 @@
 
 namespace PHPLogicalDSL\lib;
 
+use PHPLogicalDSL\DSLStructure;
+use PHPLogicalDSL\PHPLogicalDSLException;
+
 /**
  * Class ParameterTemplate    规则引擎的参数模板,定义使用规则引擎时的输入和返回值
  *
@@ -87,10 +90,9 @@ abstract class ParameterTemplate
      *
      * @param $key
      * @param $value
-     * @TODO
      */
     public function setOutput($key, $value)
     {
-
+        return $this->output[$key] = $value;
     }
 }

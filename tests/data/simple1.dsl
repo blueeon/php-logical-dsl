@@ -4,20 +4,15 @@
 
 
 rule1     {
-    when  req.order.order_from = 11
-    and req.order.order_type = 10
+    when   req.order.order_type = 10
     and(
-        req.order.stock_channel NOT IN ( 'cn-order','cn-tmall')
+        req.order.stock_channel  IN ( 'cn-tmall')
         OR req.order.price >= 1000
-        AND req.order.order_from IN(1,2,3)
-        or(
-            aaa = 1 and (
-                bbb = 1 or ccc = 3
-            )
-        )
+        AND req.order.avg_price >= 1000/3
+        AND req.order.order_from IN(1,2,3,12)
     )
     THEN
-        (res.mihome = 100 AND res.price = 100 AND WEIGHT=30),
+        (res.mihome = 100 * 2 AND res.price = 100 AND WEIGHT=30),
         (res.mihome = 112 AND res.price = 100 AND WEIGHT=70)
 }
 rule2{

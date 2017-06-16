@@ -15,24 +15,33 @@ class Executor extends SingletonInstance
     /**
      * 依据规则引擎,对实时进行一次判断
      *
-     * @param $rulesParsed
-     * @param $input
-     * @return array
+     * @param array             $rulesParsed 解析后的规则
+     * @param ParameterTemplate $params      参数对象
+     * @return ParameterTemplate
+     * @throws PHPLogicalDSLException
      */
-    public function execute($rulesParsed, $input)
+    public function execute($rulesParsed, $params)
     {
         $output = [];
+        if (!$params instanceof ParameterTemplate) {
+            throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41001], 41001);
+        }
         //检查优先级,如果存在优先级,先进行规则排序
         $rulesParsed = $this->sortRulesByPriority($rulesParsed);
+        $found       = FALSE;
         foreach ($rulesParsed['rules'] as $rule) {
             //判断能否如果能通过全体条件
             //若通过则执行THEN结果
-            if ($this->assertOneRule($rule['body']['WHEN'], $input)) {
-                $output = $rule['body']['THEN'];
+            if ($this->assertOneRule($rule['body']['WHEN'], $params->getInput())) {
+                $this->calThen($rule['body']['THEN'], $params);
+                $found = TRUE;
                 break;
             }
         }
-        return $output;
+        if (!$found) {
+            throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41012], 41012);
+        }
+        return $params;
     }
 
     /**
@@ -66,6 +75,41 @@ class Executor extends SingletonInstance
         $return = array_pop($executeStack);
 
         return $return;
+    }
+
+    /**
+     *
+     *
+     * @param array  $then
+     * @param object $params
+     * @return object
+     */
+    public function calThen($then, &$params)
+    {
+        $totalWeight = 0;
+        $weight      = [];
+        foreach ($then as $key => $item) {
+            if (isset($item['WEIGHT'])) {
+                $totalWeight += $item['WEIGHT'];
+            } else {
+                $item['WEIGHT'] = 0;
+            }
+            $weight[$key] = $item['WEIGHT'];
+        }
+        $randWeight = rand(0, $totalWeight - 1);
+        var_dump($randWeight);
+        $start      = 0;
+        foreach ($weight as $key => $item) {
+            $end = $start + $item;
+            if ($randWeight >= $start && $randWeight < $end) {
+                foreach ($then[$key]['RESULT'] as $valueName => $value) {
+                    $this->setParams($params, $valueName, $value);
+                }
+                break;
+            }
+            $start = $end;
+        }
+        return $params;
     }
 
     /**
@@ -200,10 +244,32 @@ class Executor extends SingletonInstance
             if (isset($value[$tmpKey])) {
                 $value = $value[$tmpKey];
             } else {
-                throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41009], 41009);
+                throw new PHPLogicalDSLException("Can not find value '{$tmpKey}' in params :" . json_encode($value), 41009);
             }
         }
         $return = $value;
         return $return;
+    }
+
+    /**
+     * 根据key设置输出值
+     *
+     * @param ParameterTemplate $params
+     * @param string            $key
+     * @param string            $value
+     * @return ParameterTemplate
+     * @throws PHPLogicalDSLException
+     */
+    public function setParams(&$params, $key, $value)
+    {
+        if (strstr($key, 'res.') == false) {
+            throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41007], 41007);
+        }
+        $key = str_replace('res.', '', $key);
+        if (count($key) > 1) {
+            throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41010], 41010);
+        }
+        $params->setOutput($key, $value);
+        return $params;
     }
 }

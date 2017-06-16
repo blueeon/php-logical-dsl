@@ -25,6 +25,7 @@ class Simple1Params extends ParameterTemplate
             'order_id'      => null,
             'stock_channel' => null,
             'order_from'    => null,
+            'order_type'    => null,
             'price'         => null,
             'mihome'        => null,
         ],
@@ -49,6 +50,7 @@ class Simple1Params extends ParameterTemplate
         ],
     ];
     protected $output = [
-        'express_id' => null,
+        'express' => null,
+        'mihome'  => null,
     ];
 }

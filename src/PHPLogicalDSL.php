@@ -78,8 +78,7 @@ class PHPLogicalDSL
         if (!$params instanceof ParameterTemplate) {
             throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41001], 41001);
         }
-        $input        = $params->getInput();
-        $this->output = Executor::getInstance()->execute($this->ruleParsed, $input);
+        $this->output = Executor::getInstance()->execute($this->ruleParsed, $params);
         return $this->output;
     }
 
@@ -139,7 +138,6 @@ class PHPLogicalDSL
     /**
      * 格式化DSL脚本
      *
-     * @TODO
      */
     public function format()
     {
