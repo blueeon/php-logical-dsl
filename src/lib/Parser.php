@@ -230,7 +230,6 @@ class Parser extends SingletonInstance
      * 将解析过的语法树,转回文本
      *
      * @param $parsed
-     * @TODO
      */
     public function showText($parsed)
     {
@@ -270,7 +269,12 @@ class Parser extends SingletonInstance
                 $tmpThen [] = $this->space($spaceLen) . "( " . implode(' AND ', $tmpThenScript) . " )";
             }
             $script .= implode(',' . PHP_EOL, $tmpThen) . PHP_EOL;
-            $script .= "    PRIORITY = 0" . PHP_EOL;
+            if (empty($item['body']['PRIORITY'])) {
+                $script .= "    PRIORITY = 0" . PHP_EOL;
+            } else {
+                $script .= "    PRIORITY = {$item['body']['PRIORITY']}" . PHP_EOL;
+            }
+
             $script .= "}" . PHP_EOL;
         }
         return $script;

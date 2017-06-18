@@ -14,8 +14,10 @@ composer require blueeon/php-logical-dsl
 ### Prototype
 
 ```
-#Test rules
-RULE_PATTERNS test_tule
+/**
+ *
+ *Test rules
+ */
 rule_name{
     WHEN  req.order.order_from = 11 AND req.order.stock_channel NOT IN( 'cn-order') AND req.order.price >= 1000
     THEN

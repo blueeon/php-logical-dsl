@@ -11,8 +11,8 @@ rule1{
     PRIORITY = 1
 }
 rule2{
-    WHEN  req.order.order_from = 11 AND req.order.stock_channel NOTIN( 'cn-order')
+    WHEN  req.order.order_from = 11 AND req.order.stock_channel NOT IN( 'cn-tmall')
     THEN
         (res.mihome = 110 AND WEIGHT=10)
     PRIORITY = 2
-]
+}

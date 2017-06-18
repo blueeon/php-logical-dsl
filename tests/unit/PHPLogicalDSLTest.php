@@ -6,7 +6,6 @@
  */
 namespace PHPLogicalDSLTests\unit;
 
-use PHPLogicalDSL\lib\Parser;
 use PHPLogicalDSL\PHPLogicalDSL;
 use PHPLogicalDSLTests\data\Simple1Params;
 use PHPUnit\Framework\TestCase;
@@ -49,7 +48,6 @@ class PHPLogicalDSLTest extends TestCase
         }
         $obj2 = new PHPLogicalDSL();
         $obj2->load($script, $params);
-
         $this->assertEquals($obj->format(), $obj2->format());
     }
 
@@ -58,13 +56,59 @@ class PHPLogicalDSLTest extends TestCase
      *
      * @param ParameterTemplate $params 参数对象
      * @param PHPLogicalDSL     $obj    实例化的PHPLogicalDSL对象
-     * @dataProvider addExecuteData
      */
-    public function testExecute($params, $obj)
+    public function testExecuteLogicCover()
     {
+        list($params, $obj) = $this->addExecuteData('logic_cover.dsl');
         $res = $obj->execute($params);
-        var_dump($obj->format(), $res);
-//        $this->assertEquals($res, array('express_id' => null));
+        $this->assertTrue(!empty($res));
+        $this->assertTrue(in_array(
+            $res->getOutput(),
+            [
+                ['express' => 12, 'mihome' => 112],
+                ['express' => 10, 'mihome' => 100],
+            ]
+        ));
+    }
+
+    /**
+     *  根据传入参数,执行一个规则组判断
+     *
+     * @param ParameterTemplate $params 参数对象
+     * @param PHPLogicalDSL     $obj    实例化的PHPLogicalDSL对象
+     */
+    public function testExecutePriority()
+    {
+        list($params, $obj) = $this->addExecuteData('priority.dsl');
+        $res = $obj->execute($params);
+        $this->assertTrue(!empty($res));
+        $this->assertTrue(in_array(
+            $res->getOutput(),
+            [
+                ['express' => 10, 'mihome' => 112],
+                ['express' => 10, 'mihome' => 100],
+            ]
+        ));
+    }
+
+    /**
+     *  根据传入参数,执行一个规则组判断
+     *
+     * @param ParameterTemplate $params 参数对象
+     * @param PHPLogicalDSL     $obj    实例化的PHPLogicalDSL对象
+     */
+    public function testExecuteSimple1()
+    {
+        list($params, $obj) = $this->addExecuteData('simple1.dsl');
+        $res = $obj->execute($params);
+        $this->assertTrue(!empty($res));
+        $this->assertTrue(in_array(
+            $res->getOutput(),
+            [
+                ['express' => 14, 'mihome' => 112, 'price' => 1200],
+                ['express' => null, 'mihome' => 100, 'price' => 110],
+            ]
+        ));
     }
 
     /**
@@ -89,6 +133,7 @@ class PHPLogicalDSLTest extends TestCase
             }
         }
         closedir($handler);
+//        $return    = [$return['syntax_check.dsl']];
         return $return;
     }
 
@@ -99,7 +144,7 @@ class PHPLogicalDSLTest extends TestCase
      * @param $params
      * @return array
      */
-    public function addExecuteData()
+    public function addExecuteData($fileName = '')
     {
         $return = [];
         $ret    = $this->addLoadData();
@@ -128,6 +173,9 @@ class PHPLogicalDSLTest extends TestCase
             ]);
 
             $return[$key] = [$paramsObj, $obj];
+        }
+        if (!empty($fileName)) {
+            $return = $return[$fileName];
         }
         return $return;
     }

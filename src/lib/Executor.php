@@ -28,7 +28,7 @@ class Executor extends SingletonInstance
         }
         //检查优先级,如果存在优先级,先进行规则排序
         $rulesParsed = $this->sortRulesByPriority($rulesParsed);
-        $found       = FALSE;
+        $found = FALSE;
         foreach ($rulesParsed['rules'] as $rule) {
             //判断能否如果能通过全体条件
             //若通过则执行THEN结果
@@ -97,7 +97,6 @@ class Executor extends SingletonInstance
             $weight[$key] = $item['WEIGHT'];
         }
         $randWeight = rand(0, $totalWeight - 1);
-        var_dump($randWeight);
         $start      = 0;
         foreach ($weight as $key => $item) {
             $end = $start + $item;
@@ -134,8 +133,8 @@ class Executor extends SingletonInstance
             foreach ($priority as $key => $item) {
                 $rules[] = $rulesParsed['rules'][$key];
             }
+            $rulesParsed['rules'] = $rules;
         }
-        $rulesParsed['rules'] = $rules;
         return $rulesParsed;
 
     }
