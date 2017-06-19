@@ -7,6 +7,9 @@ A simple DSL for WHEN and THEN
 ```
 composer require blueeon/php-logical-dsl
 ```
+## Packgist Page
+
+https://packagist.org/packages/blueeon/php-logical-dsl
 
 ## Try it!
 
