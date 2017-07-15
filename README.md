@@ -17,6 +17,7 @@ https://packagist.org/packages/blueeon/php-logical-dsl
 ## Syntax Definition
 ### Prototype
 
+
 ```
 /**
  *
