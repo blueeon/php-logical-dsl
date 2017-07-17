@@ -79,6 +79,7 @@ class PHPLogicalDSL
             throw new PHPLogicalDSLException(DSLStructure::ERROR_CODE[41001], 41001);
         }
         $this->output = Executor::getInstance()->execute($this->ruleParsed, $params)->getOutput();
+        
         return $this->output;
     }
 
