@@ -50,7 +50,8 @@ class Simple1Params extends ParameterTemplate
         ],
     ];
     protected $output = [
-        'express' => null,
-        'mihome'  => null,
+        'express'     => null,
+        'mihome'      => null,
+        'mihome_name' => null,
     ];
 }

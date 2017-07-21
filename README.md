@@ -101,8 +101,6 @@ rule2{
 /**
  * 带权重,多返回值,复杂判断逻辑
  */
-
-
 rule1{
     WHEN    req.order.order_type = 10
     AND(
@@ -126,7 +124,22 @@ rule2{
 
 ```
 
+#### 5. Return a function and execute it
+```
+/**
+ * 返回一个方法,并且执行这个方法,如果找不到这个方法,则抛一个异常,仅支持静态方法,且需完整的可访问到的命名空间
+ */
 
+
+rule1{
+    when    req.order.order_type = 10
+    THEN    res.mihome = 100 AND res.mihome = PHPLogicalDSLTests\data\CommonFunction::getMihome(100)
+}
+rule2{
+    WHEN    req.order.order_type = 11
+    THEN    res.mihome = 112 AND res.mihome = PHPLogicalDSLTests\data\CommonFunction::getMihome(112)
+}
+```
 
 ## Usefull Tools
 
