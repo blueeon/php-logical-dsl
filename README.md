@@ -139,6 +139,28 @@ rule2{
     THEN    res.mihome = 112 AND res.mihome = PHPLogicalDSLTests\data\CommonFunction::getMihome(112)
 }
 ```
+## Supported Operator
+
+Operator|name|cn_name|remark    
+---|---|---|--- 
+*|multiply|乘|
+/|divide|除|
+%|mod|取余|
++|plus|加|
+-|minus|减|
+>|gt|大于|
+<|lt|晓宇|
+>=|Greater than or equal to|大于等于|
+<=|Less than or equal to|小于等于|
+IN|in|在...中|
+NOTIN|not in |不在...中|
+EXSIT|exsit|存在|
+NOTEXSIT|not exsit|不存在|
+=|equal|等于|
+!=|not equal|不等于|
+AND|and|和、且|
+OR|or|或者|
+
 
 ## Usefull Tools
 
