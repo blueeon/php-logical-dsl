@@ -149,7 +149,7 @@ Operator|name|cn_name|remark
 `+`|plus|加|   
 `-`|minus|减|  
 `>`|gt|大于|        
-`<`|lt|晓宇|    
+`<`|lt|小于|    
 `>=`|Greater than or equal to|大于等于|   
 `<=`|Less than or equal to|小于等于|  
 `IN`|in|在...中|    
