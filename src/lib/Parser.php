@@ -133,6 +133,8 @@ class Parser extends SingletonInstance
         $whenScript = str_ireplace($inFrom, $inTo, $whenScript);
         //替换NOT IN
         $whenScript = str_ireplace('NOT IN', 'NOTIN', $whenScript);
+        //替换NOT EXSIT
+        $whenScript = str_ireplace('NOT EXSIT', 'NOTEXSIT', $whenScript);
 
         $whenScriptList = explode(' ', $whenScript);
         $return         = $this->parseWhenToPrefixExpression($whenScriptList);
@@ -250,6 +252,8 @@ class Parser extends SingletonInstance
                     $script .= "\n" . $this->space($spaceLen) . $tmpWhenItem;
                 } elseif ($tmpWhenItem == 'NOTIN') {
                     $script .= 'NOT IN' . ' ';
+                }  elseif ($tmpWhenItem == 'NOTEXSIT') {
+                    $script .= 'NOT EXSIT' . ' ';
                 } else {
                     $script .= $tmpWhenItem . ' ';
                 }

@@ -45,6 +45,8 @@ class DSLStructure
         '<='    => 6,
         'IN'    => 6,
         'NOTIN' => 6,
+        'EXSIT'    => 6,
+        'NOTEXSIT' => 6,
         '='     => 7,
         '!='    => 7,
         'AND'   => 11,

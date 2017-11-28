@@ -185,6 +185,12 @@ class Executor extends SingletonInstance
             case 'NOTIN' :
                 $return = !in_array($left, $this->transSetString($right));
                 break;
+            case 'EXSIT' :
+                $return = in_array($right, $left);
+                break;
+            case 'NOEXSIT' :
+                $return = !in_array($right, $this->transSetString());
+                break;
             case '=' :
                 $return = $left == $right;
                 break;
