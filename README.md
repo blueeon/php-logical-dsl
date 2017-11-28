@@ -147,7 +147,7 @@ Operator|name|cn_name|remark
 /|divide|除| 
 %|mod|取余|   
 +|plus|加|   
--|minus|减|  
+`-`|minus|减|  
 >|gt|大于|        
 <|lt|晓宇|    
 >=|Greater than or equal to|大于等于|   
