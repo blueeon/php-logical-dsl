@@ -188,8 +188,8 @@ class Executor extends SingletonInstance
             case 'EXSIT' :
                 $return = in_array($right, $left);
                 break;
-            case 'NOEXSIT' :
-                $return = !in_array($right, $this->transSetString());
+            case 'NOTEXSIT' :
+                $return = !in_array($right, $left);
                 break;
             case '=' :
                 $return = $left == $right;
